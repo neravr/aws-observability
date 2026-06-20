@@ -18,13 +18,13 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:            ${{ env.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Install Terraform
         run: |
-           wget -q https://releases.hashicorp.com/terraform/${{ env.TF_VERSION }}/terraform_${{ env.TF_VERSION }}_linux_amd64.zip
+          wget -q https://releases.hashicorp.com/terraform/${{ env.TF_VERSION }}/terraform_${{ env.TF_VERSION }}_linux_amd64.zip
           mkdir -p tf_install
           unzip -o terraform_${{ env.TF_VERSION }}_linux_amd64.zip -d tf_install
           sudo mv tf_install/terraform /usr/local/bin/terraform
@@ -32,27 +32,22 @@ jobs:
 
       - name: Create S3 bucket for Terraform state
         run: |
-          aws s3api create-bucket \
-            --bucket aws-observability-tfstate-${{ secrets.AWS_ACCOUNT_ID }} \
-            --region ${{ env.AWS_REGION }} 2>/dev/null || echo "Bucket already exists"
+          aws s3api create-bucket --bucket aws-observability-tfstate-${{ secrets.AWS_ACCOUNT_ID }} --region ${{ env.AWS_REGION }} 2>/dev/null || echo "Bucket already exists"
 
       - name: Package Lambda functions
         run: |
-          # Package app-service
           cd lambdas/app_service
           pip install -r requirements.txt -t package/ -q
           cp main.py package/
           cd package && zip -r ../../../app-service.zip . -q
           cd ../../..
 
-          # Package order-service
           cd lambdas/order_service
           pip install -r requirements.txt -t package/ -q
           cp main.py package/
           cd package && zip -r ../../../order-service.zip . -q
           cd ../../..
 
-          # Package runbook-generator
           cd lambdas/runbook_generator
           pip install -r requirements.txt -t package/ -q
           cp main.py package/
@@ -62,8 +57,8 @@ jobs:
       - name: Upload Lambda packages to S3
         run: |
           BUCKET="aws-observability-lambda-${{ secrets.AWS_ACCOUNT_ID }}"
-          aws s3 cp app-service.zip      s3://$BUCKET/app-service.zip
-          aws s3 cp order-service.zip    s3://$BUCKET/order-service.zip
+          aws s3 cp app-service.zip s3://$BUCKET/app-service.zip
+          aws s3 cp order-service.zip s3://$BUCKET/order-service.zip
           aws s3 cp runbook-generator.zip s3://$BUCKET/runbook-generator.zip
 
       - name: Terraform init
@@ -73,14 +68,12 @@ jobs:
       - name: Terraform plan
         working-directory: terraform
         run: |
-          terraform plan \
-            -var="sns_email=${{ secrets.SNS_EMAIL }}"
+          terraform plan -var="sns_email=${{ secrets.SNS_EMAIL }}"
 
       - name: Terraform apply
         working-directory: terraform
         run: |
-          terraform apply -auto-approve \
-            -var="sns_email=${{ secrets.SNS_EMAIL }}"
+          terraform apply -auto-approve -var="sns_email=${{ secrets.SNS_EMAIL }}"
 
       - name: Job summary
         run: |
