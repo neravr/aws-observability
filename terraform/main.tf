@@ -20,14 +20,8 @@ provider "aws" {
 }
 
 # S3 bucket for Lambda deployment packages
-resource "aws_s3_bucket" "lambda_packages" {
-  bucket        = "aws-observability-lambda-${var.account_id}"
-  force_destroy = true
-
-  tags = {
-    project    = "aws-observability"
-    managed-by = "terraform"
-  }
+data "aws_s3_bucket" "lambda_packages" {
+  bucket = "aws-observability-lambda-${var.account_id}"
 }
 
 # X-Ray sampling rule

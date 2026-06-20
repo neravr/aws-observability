@@ -7,7 +7,7 @@ resource "aws_lambda_function" "app_service" {
   timeout       = 30
   memory_size   = 256
 
-  s3_bucket = aws_s3_bucket.lambda_packages.bucket
+  s3_bucket = data.aws_s3_bucket.lambda_packages.bucket
   s3_key    = "app-service.zip"
 
   tracing_config {
@@ -40,7 +40,7 @@ resource "aws_lambda_function" "order_service" {
   timeout       = 30
   memory_size   = 256
 
-  s3_bucket = aws_s3_bucket.lambda_packages.bucket
+  s3_bucket = data.aws_s3_bucket.lambda_packages.bucket
   s3_key    = "order-service.zip"
 
   tracing_config {
@@ -74,7 +74,7 @@ resource "aws_lambda_function" "runbook_generator" {
   timeout       = 60
   memory_size   = 256
 
-  s3_bucket = aws_s3_bucket.lambda_packages.bucket
+  s3_bucket = data.aws_s3_bucket.lambda_packages.bucket
   s3_key    = "runbook-generator.zip"
 
   tracing_config {

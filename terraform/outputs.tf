@@ -7,7 +7,7 @@ output "lambda_role_arn" {
 }
 
 output "lambda_bucket" {
-  value = aws_s3_bucket.lambda_packages.bucket
+  value = data.aws_s3_bucket.lambda_packages.bucket
 }
 
 output "cloudwatch_alarm" {
