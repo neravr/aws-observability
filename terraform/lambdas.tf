@@ -17,7 +17,7 @@ resource "aws_lambda_function" "app_service" {
   environment {
     variables = {
       ENV        = var.env
-      AWS_REGION = var.region
+      APP_REGION = var.region
     }
   }
 
@@ -50,7 +50,7 @@ resource "aws_lambda_function" "order_service" {
   environment {
     variables = {
       ENV        = var.env
-      AWS_REGION = var.region
+      APP_REGION = var.region
       ERROR_RATE = "0.3"
     }
   }
@@ -84,7 +84,7 @@ resource "aws_lambda_function" "runbook_generator" {
   environment {
     variables = {
       ENV              = var.env
-      AWS_REGION       = var.region
+      APP_REGION       = var.region
       SNS_TOPIC_ARN    = aws_sns_topic.runbook_notifications.arn
       BEDROCK_MODEL_ID = var.bedrock_model_id
     }

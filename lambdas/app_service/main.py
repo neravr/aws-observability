@@ -19,7 +19,7 @@ provider = TracerProvider(resource=resource)
 trace.set_tracer_provider(provider)
 tracer = trace.get_tracer(__name__)
 
-lambda_client = boto3.client("lambda", region_name=os.environ.get("AWS_REGION", "us-east-1"))
+lambda_client = boto3.client("lambda", region_name=os.environ.get("APP_REGION", "us-east-1"))
 
 def lambda_handler(event, context):
     """
