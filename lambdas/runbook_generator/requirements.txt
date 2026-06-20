@@ -1,3 +1,1 @@
-@"
 boto3==1.34.0
-"@ | Out-File -FilePath "lambdas\runbook_generator\requirements.txt" -Encoding utf8
