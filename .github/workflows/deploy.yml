@@ -24,9 +24,10 @@ jobs:
 
       - name: Install Terraform
         run: |
-          wget -q https://releases.hashicorp.com/terraform/${{ env.TF_VERSION }}/terraform_${{ env.TF_VERSION }}_linux_amd64.zip
-          unzip -o terraform_${{ env.TF_VERSION }}_linux_amd64.zip
-          sudo mv terraform /usr/local/bin/
+           wget -q https://releases.hashicorp.com/terraform/${{ env.TF_VERSION }}/terraform_${{ env.TF_VERSION }}_linux_amd64.zip
+          mkdir -p tf_install
+          unzip -o terraform_${{ env.TF_VERSION }}_linux_amd64.zip -d tf_install
+          sudo mv tf_install/terraform /usr/local/bin/terraform
           terraform version
 
       - name: Create S3 bucket for Terraform state
