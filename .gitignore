@@ -1,0 +1,9 @@
+﻿terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform.lock.hcl
+terraform/test-body.json
+*.pyc
+__pycache__/
+.env
+outfile.json
