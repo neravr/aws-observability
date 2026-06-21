@@ -198,24 +198,17 @@ def lambda_handler(event, context):
     # Extract alarm name from SNS message or direct invocation
     alarm_name = None
     if "Records" in event:
-        message    = json.loads(event["Records"][0]["Sns"]["Message"])
+        raw_message = event["Records"][0]["Sns"]["Message"]
+        try:
+            message = json.loads(raw_message)
+        except json.JSONDecodeError:
+            print("Received non-JSON SNS message (likely the runbook itself), skipping.")
+            return {"statusCode": 200, "message": "skipped non-alarm message"}
+
+        if not isinstance(message, dict) or "AlarmName" not in message:
+            print("Received SNS message without AlarmName, skipping.")
+            return {"statusCode": 200, "message": "skipped"}
+
         alarm_name = message.get("AlarmName")
     else:
         alarm_name = event.get("alarm_name", "high-error-rate-dev")
-
-    print(f"Processing alarm: {alarm_name}")
-
-    alarm  = get_alarm_details(alarm_name)
-    traces = get_recent_traces("order-service")
-
-    print(f"Fetched alarm details and {len(traces)} traces")
-
-    runbook = generate_runbook_with_bedrock(alarm, traces)
-    print(f"Generated runbook: {runbook.get('incident_title')}")
-
-    send_runbook_email(runbook, alarm_name)
-
-    return {
-        "statusCode": 200,
-        "runbook":    runbook
-    }
