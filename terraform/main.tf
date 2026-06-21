@@ -93,6 +93,8 @@ resource "aws_iam_role_policy" "lambda_policy" {
           "cloudwatch:GetMetricStatistics",
           "cloudwatch:DescribeAlarms",
           "bedrock:InvokeModel",
+          "aws-marketplace:ViewSubscriptions",
+          "aws-marketplace:Subscribe",
           "sns:Publish",
           "lambda:InvokeFunction"
         ]
