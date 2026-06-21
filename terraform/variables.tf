@@ -22,5 +22,5 @@ variable "sns_email" {
 variable "bedrock_model_id" {
   type        = string
   description = "AWS Bedrock model ID"
-  default     = "anthropic.claude-sonnet-4-20250514-v1:0"
+  default     = "us.anthropic.claude-3-sonnet-20240229-v1:0"
 }
