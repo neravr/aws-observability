@@ -9,6 +9,7 @@ resource "aws_lambda_function" "app_service" {
 
   s3_bucket = data.aws_s3_bucket.lambda_packages.bucket
   s3_key    = "app-service.zip"
+  source_code_hash = filebase64sha256("${path.module}/../app-service.zip")
 
   tracing_config {
     mode = "Active"
@@ -42,6 +43,7 @@ resource "aws_lambda_function" "order_service" {
 
   s3_bucket = data.aws_s3_bucket.lambda_packages.bucket
   s3_key    = "order-service.zip"
+  source_code_hash = filebase64sha256("${path.module}/../order-service.zip")
 
   tracing_config {
     mode = "Active"
@@ -76,6 +78,7 @@ resource "aws_lambda_function" "runbook_generator" {
 
   s3_bucket = data.aws_s3_bucket.lambda_packages.bucket
   s3_key    = "runbook-generator.zip"
+  source_code_hash = filebase64sha256("${path.module}/../runbook-generator.zip")
 
   tracing_config {
     mode = "Active"
