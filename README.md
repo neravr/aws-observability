@@ -201,14 +201,10 @@ The fix that actually worked: testing the simplest possible Bedrock call directl
 
 ## What I'd add next
 
-- Slack notification channel alongside email for faster triage
+- Teams notification channel alongside email for faster triage
 - Multi-channel routing — critical alerts to a different channel than warnings
 - Auto-remediation for known safe fixes (e.g., restarting a stuck function) with confirmation
 - Cost tracking for Bedrock token usage per incident
 - Cross-account alarm aggregation for multi-environment observability
 
----
 
-## License
-
-MIT
